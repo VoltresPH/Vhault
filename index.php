@@ -1,6 +1,8 @@
 <?php
-    // check if theres active session (for auth)
-    // if none, redirect to login
+    session_start();
+    if (!isset($_SESSION['user_id'])) {
+        header('Location: login.php');
+    }
 ?>
 
 <!DOCTYPE html>

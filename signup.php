@@ -1,6 +1,8 @@
 <?php
-    // check if theres active session (for auth)
-    // if yes, redirect to home
+    session_start();
+    if (isset($_SESSION['user_id'])) {
+        header('Location: index.php');
+    }
 ?>
 
 <!DOCTYPE html>
