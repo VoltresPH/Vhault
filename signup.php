@@ -13,6 +13,6 @@
     <title>Sign Up - Vhault</title>
 </head>
 <body>
-    bryan
+    
 </body>
 </html>
