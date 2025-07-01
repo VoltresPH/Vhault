@@ -14,6 +14,7 @@
     <title>Login - Vhault</title>
 </head>
 <body>
-    
+    <H1>Login</H1>
+
 </body>
 </html>
