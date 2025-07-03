@@ -1,13 +1,23 @@
 <?php
-    require_once "inc/inc.php";
-    session_start();
-    if (isset($_SESSION['user_id'])) {
-        header('Location: index.php');
-        exit();
-    }
+    require_once "inc/init.php";
+  
+    // if (isset($_SESSION['user_id'])) {
+    //     header('Location: /');
+    //     exit();
+    // }
 
     $error = '';
     $success = '';
+
+    // Check for result parameter
+    if (isset($_GET['result'])) {
+        if ($_GET['result'] === 'exists') {
+            $error = 'Username already taken.';
+        } elseif ($_GET['result'] === 'false') {
+            $error = 'Registration failed. Please try again.';
+        }
+    }
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $username = trim($_POST['username'] ?? '');
         $password = $_POST['password'] ?? '';
@@ -18,25 +28,7 @@
         } elseif ($password !== $confirm_password) {
             $error = 'Passwords do not match.';
         } else {
-            // Check if username exists
-            $stmt = $conn->prepare('SELECT id FROM users WHERE username = ?');
-            $stmt->bind_param('s', $username);
-            $stmt->execute();
-            $stmt->store_result();
-            if ($stmt->num_rows > 0) {
-                $error = 'Username already taken.';
-            } else {
-                // Insert new user
-                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $stmt = $conn->prepare('INSERT INTO users (username, password) VALUES (?, ?)');
-                $stmt->bind_param('ss', $username, $hashed_password);
-                if ($stmt->execute()) {
-                    $success = 'Account created successfully! You can now <a href="login.php">Log In</a>.';
-                } else {
-                    $error = 'Registration failed. Please try again.';
-                }
-            }
-            $stmt->close();
+            createAccountDB($username, $password);
         }
     }
 ?>
@@ -48,10 +40,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - Vhault</title>
   
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- font -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+    </style>
+
+     <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
+            font-family: 'Montserrat', Arial, sans-serif;
         }
         html, body {
             margin: 0;
@@ -61,9 +65,9 @@
             min-width: 100vw;
             min-height: 100vh;
             overflow-x: hidden;
-            font-family: 'Montserrat', Arial, sans-serif;
             background: #fff;
         }
+    
         body {
             width: 100vw;
             height: 100vh;
@@ -227,7 +231,6 @@
             left: 0;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -256,8 +259,8 @@
         </div>
         <div class="right">
             <div style="text-align:center;">
-                <div style="font-size:4.2rem;font-weight:900;letter-spacing:2.5px; color:#ffc107; text-shadow: 1px 1px 4px #111;">VHAULT</div>
-                <div style="font-size:1.5rem;font-weight:700;color:#fff;margin-top:16px; text-shadow: 1px 1px 4px #111;">Haul your files. Vault your world.</div>
+                <div style="font-size:4.2rem;font-weight:700;letter-spacing:2.5px; color:#ffc107; text-shadow: 1px 1px 4px #111;">VHAULT</div>
+                <div style="font-size:1.5rem;font-weight:500;color:#fff;margin-top:16px; text-shadow: 1px 1px 4px #111;">Haul your files. Vault your world.</div>
             </div>
         </div>
     </div>
