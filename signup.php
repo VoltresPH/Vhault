@@ -213,6 +213,19 @@
                 font-size: 1.3rem;
             }
         }
+        /* Slide overlay for transition */
+        .slide-overlay {
+            position: fixed;
+            top: 0; left: 100vw;
+            width: 100vw;
+            height: 100vh;
+            background: #23272f;
+            z-index: 9999;
+            transition: left 0.7s cubic-bezier(.77,0,.18,1);
+        }
+        .slide-overlay.active {
+            left: 0;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400" rel="stylesheet">
 </head>
@@ -237,7 +250,7 @@
                 </div>
                 <button type="submit">Register</button>
                 <div class="login-link">
-                    Already Have an Account? ? <a href="login.php">Log In</a>
+                    Already Have an Account? ? <a href="#" id="slideToLogin">Log In</a>
                 </div>
             </form>
         </div>
@@ -248,5 +261,16 @@
             </div>
         </div>
     </div>
+    <div class="slide-overlay" id="slideOverlay"></div>
+    <script>
+    document.getElementById('slideToLogin').addEventListener('click', function(e) {
+        e.preventDefault();
+        var overlay = document.getElementById('slideOverlay');
+        overlay.classList.add('active');
+        setTimeout(function() {
+            window.location.href = 'login.php';
+        }, 700); // match transition duration
+    });
+    </script>
 </body>
 </html>
