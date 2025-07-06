@@ -22,7 +22,7 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="/">VHAULT</a>
             <div class="user-profile">
-                <i class="fas fa-user-circle"></i>
+                <i class="bi bi-person-circle"></i>
                 <span>fwancis9</span>
             </div>
         </div>
@@ -31,26 +31,26 @@
     <div class="main-content">
         <div class="recent-files">
             <h2>
-                <i class="fas fa-folder-open"></i>
+                <i class="bi bi-folder2-open"></i>
                 Recent Files
             </h2>
             <div class="file-list">
                 <div class="file-item">
                     <div class="file-name">Filename1.png</div>
                     <button class="download-btn">
-                        <i class="fas fa-download"></i>
+                        <i class="bi bi-download"></i>
                     </button>
                 </div>
                 <div class="file-item">
                     <div class="file-name">Filename1.png</div>
                     <button class="download-btn">
-                        <i class="fas fa-download"></i>
+                        <i class="bi bi-download"></i>
                     </button>
                 </div>
                 <div class="file-item">
                     <div class="file-name">Filename1.png</div>
                     <button class="download-btn">
-                        <i class="fas fa-download"></i>
+                        <i class="bi bi-download"></i>
                     </button>
                 </div>
             </div>
@@ -58,7 +58,7 @@
 
         <div class="upload-area" onclick="document.getElementById('fileInput').click()">
             <input type="file" id="fileInput" style="display: none;" multiple>
-            <i class="fas fa-cloud-upload-alt"></i>
+            <i class="bi bi-cloud-upload"></i>
             <div class="upload-text">Drop your files here</div>
             <div class="upload-subtext">or click to browse</div>
         </div>

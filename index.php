@@ -16,7 +16,7 @@
     <title>Vhault - Haul your files. Vault your world.</title>
 
     <!-- bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLusPj697FH4R/5mcr" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
     
     <!-- custom css -->
@@ -31,13 +31,13 @@
             <p class="tagline">Haul your files. Vault your world.</p>
         </div>
         <div class="drop-zone">
-            <i class="fas fa-cloud-upload-alt"></i>
+            <i class="bi bi-cloud-upload"></i>
             <p>Drag and drop files here or click to upload</p>
         </div>
         <div class="d-flex justify-content-center">
             <div class="user-section position-static">
                 <div class="user-content">
-                    <i class="fas fa-user user-icon"></i>
+                    <i class="bi bi-person user-icon"></i>
                     <span class="username"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                 </div>
                 <span class="logout-text">Log out</span>

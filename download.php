@@ -29,7 +29,7 @@
             <div class="files-grid">
                 <div class="file-card">
                     <div class="file-image">
-                        <i class="fas fa-image"></i>
+                        <i class="bi bi-file-image"></i>
                     </div>
                     <div class="file-name">Filename1.png</div>
                     <div class="file-size">4.6mb</div>
@@ -38,14 +38,14 @@
 
                 <div class="file-card download">
                     <div class="file-image">
-                        <i class="fas fa-download"></i>
+                        <i class="bi bi-download"></i>
                     </div>
                     <div class="file-name">Download</div>
                 </div>
 
                 <div class="file-card">
                     <div class="file-image">
-                        <i class="fas fa-image"></i>
+                        <i class="bi bi-file-image"></i>
                     </div>
                     <div class="file-name">Filename1.png</div>
                     <div class="file-size">4.6mb</div>
@@ -54,7 +54,7 @@
 
                 <div class="file-card">
                     <div class="file-image">
-                        <i class="fas fa-image"></i>
+                        <i class="bi bi-file-image"></i>
                     </div>
                     <div class="file-name">Filename1.png</div>
                     <div class="file-size">4.6mb</div>
@@ -63,7 +63,7 @@
 
                 <div class="file-card">
                     <div class="file-image">
-                        <i class="fas fa-image"></i>
+                        <i class="bi bi-file-image"></i>
                     </div>
                     <div class="file-name">Filename1.png</div>
                     <div class="file-size">4.6mb</div>
@@ -72,7 +72,7 @@
 
                 <div class="file-card">
                     <div class="file-image">
-                        <i class="fas fa-image"></i>
+                        <i class="bi bi-file-image"></i>
                     </div>
                     <div class="file-name">Filename1.png</div>
                     <div class="file-size">4.6mb</div>
@@ -82,7 +82,7 @@
         </div>
 
         <div class="user-section">
-            <i class="fas fa-user-circle"></i>
+            <i class="bi bi-person-circle"></i>
             <span>fwancis9</span>
         </div>
     </div>

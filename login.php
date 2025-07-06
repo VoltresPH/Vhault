@@ -65,7 +65,7 @@
                     <div class="password-container">
                         <input type="password" name="password" placeholder="Password" required id="loginPassword" class="password-input">
                         <span id="togglePassword" class="password-toggle">
-                            <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="#fff" stroke-width="2" d="M1.5 12S5.5 5.5 12 5.5 22.5 12 22.5 12 18.5 18.5 12 18.5 1.5 12 1.5 12Z"/><circle cx="12" cy="12" r="3.5" stroke="#fff" stroke-width="2"/></svg>
+                            <i class="bi bi-eye-fill" style="color: #fff; font-size: 24px;"></i>
                         </span>
                     </div>
                 </div>
