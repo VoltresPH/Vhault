@@ -1,3 +1,5 @@
+@import 'global.css';
+
 .bg {
     background: #222831;
     min-height: 100vh;
@@ -19,7 +21,7 @@
     font-weight: 500;
 }
 .drop-zone {
-    border: 2px dashed #FFC20E;
+    border: 2px dashed var(--primary-color);
     border-radius: 20px;
     padding: 8rem;
     background: rgba(34,40,49,0.95);
@@ -31,7 +33,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #FFC20E;
+    color: var(--primary-color);
     font-size: 1.2rem;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -94,7 +96,7 @@
 .logout-btn {
     background: none;
     border: none;
-    color: #FFC20E;
+    color: var(--primary-color);
     cursor: pointer;
     padding: 0.5rem 1rem;
     font-size: 1rem;

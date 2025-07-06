@@ -1,0 +1,132 @@
+@import 'global.css';
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    background: var(--primary-bg);
+    color: var(--text-light);
+}
+
+.navbar {
+    background: var(--primary-bg);
+    padding: 1rem 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.navbar-brand {
+    color: var(--primary-color);
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.navbar-brand:hover {
+    color: var(--primary-color);
+}
+
+.user-profile {
+    color: #ffc107;
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.main-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.recent-files {
+    margin-bottom: 2rem;
+}
+
+.recent-files h2 {
+    color: var(--text-light);
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.recent-files h2 i {
+    color: var(--primary-color);
+}
+
+.file-item {
+    background: #2a2f38;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.file-item:hover {
+    background: #31363f;
+}
+
+.file-name {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.download-btn {
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+    background: rgba(255, 193, 7, 0.1);
+}
+
+.upload-area {
+    border: 2px dashed var(--primary-color);
+    border-radius: 24px;
+    padding: 3rem;
+    text-align: center;
+    background: rgba(255, 193, 7, 0.05);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+    background: rgba(255, 193, 7, 0.1);
+}
+
+.upload-area i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.upload-text {
+    color: var(--text-light);
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.upload-subtext {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}

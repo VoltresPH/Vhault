@@ -1,3 +1,5 @@
+@import 'global.css';
+
 *, *::before, *::after {
     box-sizing: border-box;
     font-family: 'Montserrat', Arial, sans-serif;
@@ -32,15 +34,15 @@ body {
     height: 100vh;
 }
 .left {
-    background: #23272f;
-    color: #ffc107;
+    background: var(--primary-bg);
+    color: var(--primary-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 .right {
-    background: #ffc107;
+    background: var(--primary-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -90,31 +92,27 @@ body {
 .form-box button {
     width: 70%;
     padding: 14px 0;
-    border: none;
-    border-radius: 24px;
     background: #888;
-    color: #fff;
+    color: var(--text-light);
     font-size: 1.15rem;
     font-weight: 700;
-    cursor: pointer;
     margin-top: 10px;
     margin-bottom: 24px;
-    transition: background 0.2s;
     letter-spacing: 0.5px;
 }
 .form-box button:hover {
-    background: #23272f;
+    background: var(--primary-bg);
 }
 .form-box .forgot {
     width: 100%;
     text-align: left;
     margin-bottom: 10px;
     font-size: 1rem;
-    color: #23272f;
+    color: var(--primary-bg);
     font-weight: 500;
 }
 .form-box .forgot a {
-    color: #23272f;
+    color: var(--primary-bg);
     text-decoration: underline;
 }
 .form-box .forgot a:hover {
@@ -123,10 +121,10 @@ body {
 .form-box .register-link {
     margin-top: 10px;
     font-size: 1.05rem;
-    color: #23272f;
+    color: var(--primary-bg);
 }
 .form-box .register-link a {
-    color: #23272f;
+    color: var(--primary-bg);
     text-decoration: underline;
     font-weight: 600;
 }
@@ -146,10 +144,6 @@ body {
 @media (max-width: 900px) {
     .container {
         flex-direction: column;
-        width: 100vw;
-        height: 100vh;
-        min-width: 100vw;
-        min-height: 100vh;
     }
     .left, .right {
         width: 100vw;
