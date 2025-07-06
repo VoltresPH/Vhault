@@ -6,14 +6,29 @@ $username = "root";
 $password = ""; 
 $dbname = "Voltres";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
+// Create connection without database first
+$conn = new mysqli($servername, $username, $password);
 if ($conn->connect_error) {
+    error_log("Connection failed: " . $conn->connect_error);
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Create a simple users table if it doesn't exist
+// Create database if it doesn't exist
+$sql = "CREATE DATABASE IF NOT EXISTS $dbname";
+if (!$conn->query($sql)) {
+    error_log("Error creating database: " . $conn->error);
+    die("Error creating database: " . $conn->error);
+}
+
+// Close the connection and reconnect with the database selected
+$conn->close();
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    error_log("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// create a vhault_auth table if it doesn't exist
 $sql = "CREATE TABLE IF NOT EXISTS vhault_auth (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
@@ -21,5 +36,9 @@ $sql = "CREATE TABLE IF NOT EXISTS vhault_auth (
 )";
 
 if (!$conn->query($sql)) {
+    error_log("Error creating table: " . $conn->error);
     die("Error creating table: " . $conn->error);
 }
+
+// Set charset to ensure proper handling of special characters
+$conn->set_charset("utf8mb4");
