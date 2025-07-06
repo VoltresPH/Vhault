@@ -7,6 +7,9 @@
     }
 
     $error = '';
+    $success = '';
+    $is_reset_mode = isset($_POST['reset_mode']) || (isset($_GET['mode']) && $_GET['mode'] === 'reset');
+
     if (isset($_GET['error'])) {
         switch ($_GET['error']) {
             case 'wrong_password':
@@ -18,13 +21,46 @@
         }
     }
 
+    if (isset($_GET['success'])) {
+        switch ($_GET['success']) {
+            case 'registration':
+                $success = 'Registration successful! Please log in with your new account.';
+                break;
+        }
+    }
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $username = trim($_POST['username'] ?? '');
-        $password = $_POST['password'] ?? '';
-        if ($username === '' || $password === '') {
-            $error = 'All fields are required.';
+        if (isset($_POST['reset_mode'])) {
+            // Handle password reset
+            $username = trim($_POST['username'] ?? '');
+            $new_password = $_POST['new_password'] ?? '';
+            
+            if ($username === '' || $new_password === '') {
+                $error = 'All fields are required.';
+            } else {
+                $result = resetPasswordDB($username, $new_password);
+                if ($result['success']) {
+                    $success = 'Password reset successful. Please login with your new password.';
+                    $is_reset_mode = false;
+                } else {
+                    switch ($result['error']) {
+                        case 'username_not_found':
+                            $error = 'Username not found. Please check your username.';
+                            break;
+                        default:
+                            $error = 'An error occurred. Please try again.';
+                    }
+                }
+            }
         } else {
-            loginDB($username, $password);
+            // Handle normal login
+            $username = trim($_POST['username'] ?? '');
+            $password = $_POST['password'] ?? '';
+            if ($username === '' || $password === '') {
+                $error = 'All fields are required.';
+            } else {
+                loginDB($username, $password);
+            }
         }
     }
 ?>
@@ -54,25 +90,39 @@
         </div>
         <div class="right">
             <form class="form-box" method="post" autocomplete="off">
-                <h2>LOG IN HERE</h2>
+                <h2><?php echo $is_reset_mode ? 'RESET PASSWORD' : 'LOG IN HERE'; ?></h2>
                 <?php if ($error): ?>
                     <div class="message error"><?php echo $error; ?></div>
+                <?php endif; ?>
+                <?php if ($success): ?>
+                    <div class="message success"><?php echo $success; ?></div>
                 <?php endif; ?>
                 <div class="input-group">
                     <input type="text" name="username" placeholder="Username" value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>" required>
                 </div>
                 <div class="input-group no-padding">
                     <div class="password-container">
-                        <input type="password" name="password" placeholder="Password" required id="loginPassword" class="password-input">
+                        <?php if ($is_reset_mode): ?>
+                            <input type="password" name="new_password" placeholder="New Password" required id="loginPassword" class="password-input">
+                        <?php else: ?>
+                            <input type="password" name="password" placeholder="Password" required id="loginPassword" class="password-input">
+                        <?php endif; ?>
                         <span id="togglePassword" class="password-toggle">
                             <i class="bi bi-eye-fill" style="color: #fff; font-size: 24px;"></i>
                         </span>
                     </div>
                 </div>
+                <?php if ($is_reset_mode): ?>
+                    <input type="hidden" name="reset_mode" value="1">
+                <?php endif; ?>
                 <div class="forgot">
-                    <a href="#">Forgot Password?</a>
+                    <?php if ($is_reset_mode): ?>
+                        <a href="login.php">Back to Login</a>
+                    <?php else: ?>
+                        <a href="login.php?mode=reset">Forgot Password?</a>
+                    <?php endif; ?>
                 </div>
-                <button type="submit">Log In</button>
+                <button type="submit"><?php echo $is_reset_mode ? 'Reset Password' : 'Log In'; ?></button>
                 <div class="register-link">
                     Not a member? <a href="signup.php">Register Now</a>
                 </div>

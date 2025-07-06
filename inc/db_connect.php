@@ -40,5 +40,20 @@ if (!$conn->query($sql)) {
     die("Error creating table: " . $conn->error);
 }
 
+// create a vhault_files table if it doesn't exist
+$sql = "CREATE TABLE IF NOT EXISTS vhault_files (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    user_id INT(11) NOT NULL,
+    filename VARCHAR(255) NOT NULL,
+    filepath VARCHAR(255) NOT NULL,
+    upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES vhault_auth(id) ON DELETE CASCADE
+)";
+
+if (!$conn->query($sql)) {
+    error_log("Error creating table: " . $conn->error);
+    die("Error creating table: " . $conn->error);
+}
+
 // Set charset to ensure proper handling of special characters
 $conn->set_charset("utf8mb4");

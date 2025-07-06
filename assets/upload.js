@@ -1,27 +1,74 @@
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('fileInput').addEventListener('change', function(e) {
-        const files = e.target.files;
-        // Here you would typically handle the file upload
-        console.log('Files selected:', files);
-    });
-
-    // Handle drag and drop
     const uploadArea = document.querySelector('.upload-area');
+    const fileInput = document.getElementById('fileInput');
+    const uploadForm = document.querySelector('.upload-form');
 
-    uploadArea.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        uploadArea.style.background = 'rgba(255, 193, 7, 0.15)';
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        uploadArea.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
     });
 
-    uploadArea.addEventListener('dragleave', (e) => {
-        e.preventDefault();
-        uploadArea.style.background = 'rgba(255, 193, 7, 0.05)';
+    // Highlight drop zone when item is dragged over it
+    ['dragenter', 'dragover'].forEach(eventName => {
+        uploadArea.addEventListener(eventName, highlight, false);
     });
 
-    uploadArea.addEventListener('drop', (e) => {
+    ['dragleave', 'drop'].forEach(eventName => {
+        uploadArea.addEventListener(eventName, unhighlight, false);
+    });
+
+    // Handle dropped files
+    uploadArea.addEventListener('drop', handleDrop, false);
+
+    // Handle file input change
+    fileInput.addEventListener('change', handleFiles, false);
+
+    function preventDefaults (e) {
         e.preventDefault();
-        uploadArea.style.background = 'rgba(255, 193, 7, 0.05)';
-        const files = e.dataTransfer.files;
-        console.log('Files dropped:', files);
+        e.stopPropagation();
+    }
+
+    function highlight(e) {
+        uploadArea.classList.add('highlight');
+    }
+
+    function unhighlight(e) {
+        uploadArea.classList.remove('highlight');
+    }
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+
+        if (files.length > 0) {
+            fileInput.files = files;
+            uploadForm.submit();
+        }
+    }
+
+    function handleFiles(e) {
+        const files = e.target.files;
+        if (files.length > 0) {
+            uploadForm.submit();
+        }
+    }
+
+    // Handle user profile hover effect
+    const userProfile = document.querySelector('.user-profile');
+    const logoutText = userProfile.querySelector('.logout-text');
+    const username = userProfile.querySelector('span');
+    const userIcon = userProfile.querySelector('i');
+
+    userProfile.addEventListener('mouseenter', () => {
+        username.style.opacity = '0';
+        userIcon.style.opacity = '0';
+        logoutText.style.opacity = '1';
+    });
+
+    userProfile.addEventListener('mouseleave', () => {
+        username.style.opacity = '1';
+        userIcon.style.opacity = '1';
+        logoutText.style.opacity = '0';
     });
 });
