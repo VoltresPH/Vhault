@@ -1,5 +1,3 @@
-@import 'global.css';
-
 *, *::before, *::after {
     box-sizing: border-box;
     font-family: 'Montserrat', Arial, sans-serif;
