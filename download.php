@@ -19,67 +19,6 @@
             $error_message = $result['message'];
         }
     }
-
-    // Handle file download if file ID is provided
-    if (isset($_GET['file'])) {
-        // Get file information
-        $file_id = $_GET['file'];
-        try {
-            $stmt = $conn->prepare("SELECT filepath, filename FROM vhault_files WHERE id = ? AND user_id = ?");
-            if (!$stmt) {
-                throw new Exception("Database error: " . $conn->error);
-            }
-            
-            $stmt->bind_param('ii', $file_id, $_SESSION['user_id']);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            
-            if ($result->num_rows !== 1) {
-                header('Location: index.php');
-                exit();
-            }
-            
-            $file = $result->fetch_assoc();
-            $stmt->close();
-            
-            // Check if file exists
-            if (!file_exists($file['filepath'])) {
-                header('Location: index.php');
-                exit();
-            }
-            
-            // Set headers for download
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="' . $file['filename'] . '"');
-            header('Content-Length: ' . filesize($file['filepath']));
-            
-            // Output file content
-            readfile($file['filepath']);
-            exit();
-            
-        } catch (Exception $e) {
-            error_log($e->getMessage());
-            header('Location: index.php');
-            exit();
-        }
-    }
-
-    // Get all files for the user
-    try {
-        $stmt = $conn->prepare("SELECT id, filename, filepath, upload_date, filesize FROM vhault_files WHERE user_id = ? ORDER BY upload_date DESC");
-        if (!$stmt) {
-            throw new Exception("Database error: " . $conn->error);
-        }
-        
-        $stmt->bind_param('i', $_SESSION['user_id']);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $files = $result->fetch_all(MYSQLI_ASSOC);
-        $stmt->close();
-    } catch (Exception $e) {
-        error_log($e->getMessage());
-        $files = [];
-    }
 ?>
 
 <!DOCTYPE html>
