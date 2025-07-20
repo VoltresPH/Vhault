@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,800');
 
-/* CSS Custom Properties (Variables) */
 :root {
-    /* Color Palette - Professional Blue/Teal Theme */
     --color-background: #1A1D23;
     --color-surface: #252A32;
     --color-primary: #00A8CC;
@@ -12,30 +10,25 @@
     --color-text-secondary: #1A1D23;
     --color-border: #3A4A5C;
     --color-error: #E74C3C;
-    --color-success: #48CAE4; /* Changed from green to accent teal to match theme */
+    --color-success: #48CAE4;
     
-    /* Gradients */
     --gradient-primary: linear-gradient(to right, #FF4B2B, #FF416C);
     --gradient-separator: linear-gradient(to bottom, var(--color-primary) 0%, var(--color-secondary) 100%);
     
-    /* Shadows */
     --shadow-light: 0 2px 8px rgba(0,0,0,0.10);
     --shadow-medium: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     
-    /* Border Radius */
     --radius-small: 4px;
     --radius-medium: 8px;
     --radius-large: 18px;
     --radius-pill: 24px;
     
-    /* Spacing */
     --spacing-xs: 4px;
     --spacing-sm: 8px;
     --spacing-md: 16px;
     --spacing-lg: 24px;
     --spacing-xl: 32px;
     
-    /* Typography */
     --font-family: 'Montserrat', sans-serif;
     --font-size-sm: 0.875rem;
     --font-size-base: 1rem;
@@ -45,12 +38,10 @@
     --font-weight-semibold: 600;
     --font-weight-bold: 800;
     
-    /* Transitions */
     --transition-fast: 0.2s ease;
     --transition-medium: 0.6s ease-in-out;
 }
 
-/* Reset and Base Styles */
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -65,7 +56,6 @@ html, body {
     overflow-x: hidden;
 }
 
-/* Typography */
 h1, h2, h3, h4, h5, h6 {
     margin: 0;
     font-weight: var(--font-weight-bold);
@@ -94,7 +84,6 @@ a:hover {
     color: var(--color-secondary);
 }
 
-/* Form Elements */
 input {
     background-color: #eee;
     border: none;
@@ -110,7 +99,6 @@ input:focus {
     outline-offset: 2px;
 }
 
-/* Button Base Styles */
 button {
     border-radius: var(--radius-large);
     border: 0;
@@ -146,7 +134,6 @@ button:disabled {
     transform: none;
 }
 
-/* Utility Classes */
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }
@@ -161,7 +148,6 @@ button:disabled {
 .hidden { display: none !important; }
 .visible { display: block !important; }
 
-/* Scrollbar Styling */
 ::-webkit-scrollbar {
     width: 4px;
     background: transparent;
@@ -176,7 +162,6 @@ button:disabled {
     background: transparent;
 }
 
-/* For Firefox */
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--color-border) transparent;

@@ -22,7 +22,6 @@ if (!is_dir($uploadDir)) {
 $filename = uniqid() . '_' . basename($file['name']);
 $filepath = $uploadDir . $filename;
 if (move_uploaded_file($file['tmp_name'], $filepath)) {
-    // Save to DB
     $stmt = $db->prepare('INSERT INTO file_uploads (user_id, filename, filepath) VALUES (:user_id, :filename, :filepath)');
     $stmt->execute([
         ':user_id' => $user_id,

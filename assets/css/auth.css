@@ -1,6 +1,3 @@
-/* Authentication Page Styles */
-
-/* Main Container */
 .auth-container {
     background-color: var(--color-surface);
     border-radius: 10px;
@@ -12,7 +9,6 @@
     min-height: 480px;
 }
 
-/* Form Containers */
 .form-container {
     position: absolute;
     top: 0;
@@ -55,9 +51,8 @@
     }
 }
 
-/* Form Styling */
 .auth-form {
-    background-color: #2E343D; /* Lighter than surface color */
+    background-color: #2E343D;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -65,8 +60,8 @@
     padding: 0 50px;
     height: 100%;
     text-align: center;
-    border-radius: 8px; /* Add subtle rounding to form */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle depth */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .auth-form h1 {
@@ -81,7 +76,6 @@
     margin: var(--spacing-md) 0;
 }
 
-/* Force all headings in auth page to be light colored */
 .auth-page h1,
 .auth-container h1,
 .form-container h1,
@@ -93,7 +87,6 @@ h1 {
     color: #E8F4F8 !important;
 }
 
-/* Force all paragraphs in auth page to be light colored */
 .auth-page p,
 .auth-container p,
 .form-container p,
@@ -136,7 +129,6 @@ p {
     color: white;
 }
 
-/* Social Container */
 .social-container {
     margin: var(--spacing-md) 0;
 }
@@ -159,7 +151,6 @@ p {
     color: var(--color-text-secondary);
 }
 
-/* Overlay Container */
 .overlay-container {
     position: absolute;
     top: 0;
@@ -233,7 +224,6 @@ p {
     font-weight: 600;
 }
 
-/* Ensure overlay panel buttons have white text */
 .overlay-panel .ghost {
     color: white !important;
 }
@@ -243,7 +233,6 @@ p {
     opacity: 0.9;
 }
 
-/* Message Styling */
 .auth-message {
     min-height: 1.5em;
     margin: var(--spacing-sm) 0;
@@ -254,7 +243,6 @@ p {
     font-size: var(--font-size-sm);
 }
 
-/* Link Styling */
 .auth-link {
     color: var(--color-primary);
     font-size: var(--font-size-sm);
@@ -267,7 +255,6 @@ p {
     color: var(--color-secondary);
 }
 
-/* Logo Styling */
 .logo-container {
     position: absolute;
     top: 2rem;
@@ -301,7 +288,6 @@ p {
     margin-top: 0.25rem;
 }
 
-/* Auth Page Layout */
 .auth-page {
     display: flex;
     justify-content: center;
@@ -310,7 +296,6 @@ p {
     padding: var(--spacing-md);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .auth-container {
         width: 100%;

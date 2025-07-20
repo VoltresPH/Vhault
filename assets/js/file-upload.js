@@ -1,9 +1,5 @@
-// File Upload and Management Module - Simple JavaScript for student project
-
-// DOM Elements
 let dropArea, fileInput, uploadStatus, uploadMoreBtn, recentFilesList, fileManagerBtn;
 
-// Helper Functions
 function preventDefaults(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -19,7 +15,6 @@ function formatFileSize(bytes) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
-// Initialize DOM elements
 function initElements() {
     dropArea = document.getElementById('drop-area');
     fileInput = document.getElementById('fileElem');
@@ -29,16 +24,13 @@ function initElements() {
     fileManagerBtn = document.getElementById('file-manager-btn');
 }
 
-// Bind event listeners
 function bindEvents() {
     if (dropArea && fileInput) {
-        // Prevent default drag behaviors
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             dropArea.addEventListener(eventName, preventDefaults, false);
             document.body.addEventListener(eventName, preventDefaults, false);
         });
         
-        // Highlight drop area when item is dragged over it
         ['dragenter', 'dragover'].forEach(eventName => {
             dropArea.addEventListener(eventName, highlight, false);
         });
@@ -47,69 +39,55 @@ function bindEvents() {
             dropArea.addEventListener(eventName, unhighlight, false);
         });
         
-        // Handle dropped files
         dropArea.addEventListener('drop', handleDrop, false);
         
-        // Handle file input change
         fileInput.addEventListener('change', handleFiles, false);
     }
     
-    // Upload more button
     if (uploadMoreBtn) {
         uploadMoreBtn.addEventListener('click', resetUploadUI);
     }
     
-    // File manager button
     if (fileManagerBtn) {
         fileManagerBtn.addEventListener('click', openFileManager);
     }
 }
 
-// Highlight drop area
 function highlight() {
     dropArea.classList.add('highlight');
 }
 
-// Remove highlight from drop area
 function unhighlight() {
     dropArea.classList.remove('highlight');
 }
 
-// Handle dropped files
 function handleDrop(e) {
     const dt = e.dataTransfer;
     const files = dt.files;
     handleFiles({ target: { files } });
 }
 
-// Handle file selection
 function handleFiles(e) {
     const files = [...e.target.files];
     
     if (files.length === 0) return;
-    
-    // For now, handle single file upload
-    // You can extend this to handle multiple files
+
     const file = files[0];
     uploadFile(file);
 }
 
-// Upload file to server
 async function uploadFile(file) {
     if (!file) return;
     
-    // Validate file size (e.g., max 100MB)
     const maxSize = 100 * 1024 * 1024; // 100MB
     if (file.size > maxSize) {
         showUploadStatus(`File too large. Maximum size is ${formatFileSize(maxSize)}`, 'error');
         return;
     }
     
-    // Hide the file picker UI
     const filePicker = dropArea.querySelector('.upload-form');
     if (filePicker) filePicker.style.display = 'none';
     
-    // Show upload progress
     showUploadStatus(`Preparing ${file.name}...`, 'info');
     
     const formData = new FormData();
@@ -123,12 +101,10 @@ async function uploadFile(file) {
         let pausedAt99 = false;
         let done = false;
         
-        // Track upload progress
         xhr.upload.addEventListener('progress', (e) => {
             if (e.lengthComputable) {
                 let percent = Math.floor((e.loaded / e.total) * 100);
                 
-                // Pause at 99% for better UX
                 if (percent >= 99 && !pausedAt99 && !done) {
                     percent = 99;
                     pausedAt99 = true;
@@ -145,7 +121,6 @@ async function uploadFile(file) {
             }
         });
         
-        // Handle upload completion
         xhr.onreadystatechange = () => {
             if (xhr.readyState === 4) {
                 done = true;
@@ -156,7 +131,7 @@ async function uploadFile(file) {
                             const data = JSON.parse(xhr.responseText);
                             if (data.success) {
                                 showUploadStatus(`✓ Uploaded: ${file.name}`, 'success');
-                                refreshAllFiles(); // Refresh all file displays
+                                refreshAllFiles();
                             } else {
                                 showUploadStatus(`✗ Error: ${data.message}`, 'error');
                             }
@@ -168,10 +143,8 @@ async function uploadFile(file) {
                         showUploadStatus('✗ Upload failed - Server error', 'error');
                     }
                     
-                    // Reset drop area styling
                     dropArea.style.borderColor = '';
                     
-                    // Show 'Upload More' button after upload
                     if (uploadMoreBtn) {
                         uploadMoreBtn.classList.remove('hidden');
                     }
@@ -193,7 +166,6 @@ async function uploadFile(file) {
     }
 }
 
-// Show upload status message
 function showUploadStatus(message, type = 'info') {
     if (uploadStatus) {
         uploadStatus.textContent = message;
@@ -201,43 +173,33 @@ function showUploadStatus(message, type = 'info') {
     }
 }
 
-// Reset upload UI to initial state
 function resetUploadUI() {
-    // Show the file picker again
     const filePicker = dropArea.querySelector('.upload-form');
     if (filePicker) filePicker.style.display = '';
     
-    // Clear upload status
     showUploadStatus('', 'info');
     
-    // Hide upload more button
     if (uploadMoreBtn) {
         uploadMoreBtn.classList.add('hidden');
     }
     
-    // Reset file input
     if (fileInput) {
         fileInput.value = '';
     }
 }
 
-// Shared function to refresh all file displays
 async function refreshAllFiles() {
     console.log('Refreshing all file displays...');
     
-    // Refresh recent uploads
     await fetchRecentUploads();
     
-    // Refresh file explorer if it's open and initialized
     if (window.fileExplorer && typeof window.fileExplorer.loadFiles === 'function') {
         await window.fileExplorer.loadFiles();
     }
 }
 
-// Make refreshAllFiles globally available
 window.refreshAllFiles = refreshAllFiles;
 
-// Fetch recent uploads from API (using same source as file explorer)
 async function fetchRecentUploads() {
     if (!recentFilesList) return;
     
@@ -246,7 +208,6 @@ async function fetchRecentUploads() {
         const data = await response.json();
         
         if (data && data.success && Array.isArray(data.files)) {
-            // Show only the most recent 10 files for the recent uploads section
             const recentFiles = data.files.slice(0, 10);
             renderRecentFiles(recentFiles);
         } else {
@@ -257,7 +218,6 @@ async function fetchRecentUploads() {
     }
 }
 
-// Render recent files list
 function renderRecentFiles(files) {
     if (!recentFilesList) return;
     
@@ -303,7 +263,6 @@ function renderRecentFiles(files) {
     });
 }
 
-// Download file
 function downloadFile(file) {
     const link = document.createElement('a');
     link.href = file.url || `uploads/${file.name}`;
@@ -313,22 +272,18 @@ function downloadFile(file) {
     document.body.removeChild(link);
 }
 
-// Open file manager
 function openFileManager() {
     console.log('openFileManager() called');
     console.log('window.fileExplorer:', window.fileExplorer);
     
-    // Open the file explorer modal
     if (window.fileExplorer) {
         console.log('Calling fileExplorer.open()');
         window.fileExplorer.open();
-        // The file explorer will load fresh data when opened
     } else {
         console.error('File explorer not initialized');
     }
 }
 
-// Initialize file upload manager when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     initElements();
     bindEvents();

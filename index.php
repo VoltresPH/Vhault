@@ -40,7 +40,6 @@ if (!isset($_SESSION['user_id'])) {
             </button>
         </div>
         <ul id="recent-files-list" class="recent-files-list">
-            <!-- Recent files will be loaded here -->
         </ul>
     </div>
     <div class="vertical-separator"></div>
@@ -56,13 +55,11 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 </div>
 <script>
-// Simple hover logout functionality
 window.addEventListener('DOMContentLoaded', function() {
     const profileInfo = document.getElementById('profile-info');
     const profileEmail = document.getElementById('profile-email');
     let originalEmail = '';
     
-    // Load user profile first
     fetch('api/get_profile.php')
         .then(response => response.json())
         .then(data => {
@@ -70,38 +67,30 @@ window.addEventListener('DOMContentLoaded', function() {
                 originalEmail = data.email;
                 profileEmail.textContent = originalEmail;
                 
-                // Fix width glitch by setting minimum width after email loads
                 setTimeout(() => {
                     if (profileInfo) {
                         profileInfo.style.minWidth = profileInfo.offsetWidth + 'px';
                     }
                 }, 100);
                 
-                // Now set up hover functionality
                 if (profileInfo) {
-                    // Make it look clickable
                     profileInfo.style.cursor = 'pointer';
                     
-                    // Hover to show logout
                     profileInfo.onmouseenter = function() {
                         profileEmail.textContent = 'Logout?';
                     };
                     
-                    // Mouse leave to show email
                     profileInfo.onmouseleave = function() {
                         profileEmail.textContent = originalEmail;
                     };
                     
-                    // Click to logout
                     profileInfo.onclick = function() {
                         if (profileEmail.textContent === 'Logout?') {
-                            // Simple logout redirect
                             window.location.href = 'api/logout.php';
                         }
                     };
                 }
             } else {
-                // Fallback if not logged in
                 if (profileEmail) {
                     profileEmail.textContent = 'Not logged in';
                 }
@@ -115,7 +104,6 @@ window.addEventListener('DOMContentLoaded', function() {
         });
 });
 </script>
-<!-- File Explorer Modal -->
 <div id="file-explorer-modal" class="file-explorer-modal" aria-hidden="true">
     <div class="file-explorer-content">
         <div class="file-explorer-header">
@@ -142,7 +130,6 @@ window.addEventListener('DOMContentLoaded', function() {
         </div>
         
         <div class="file-explorer-body" id="file-explorer-body">
-            <!-- Files will be loaded here dynamically -->
             <div class="loading-container">
                 <div class="spinner"></div>
                 <p>Loading files...</p>

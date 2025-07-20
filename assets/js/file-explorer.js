@@ -1,4 +1,3 @@
-// File Explorer Modal Module
 class FileExplorer {
     constructor() {
         this.modal = null;
@@ -32,12 +31,10 @@ class FileExplorer {
     }
     
     bindEvents() {
-        // Close modal events
         if (this.closeBtn) {
             this.closeBtn.addEventListener('click', () => this.close());
         }
         
-        // Close on backdrop click
         if (this.modal) {
             this.modal.addEventListener('click', (e) => {
                 if (e.target === this.modal) {
@@ -46,14 +43,12 @@ class FileExplorer {
             });
         }
         
-        // Close on Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.isOpen()) {
                 this.close();
             }
         });
         
-        // Search functionality
         if (this.searchInput) {
             this.searchInput.addEventListener('input', (e) => {
                 this.filterFiles(e.target.value);
@@ -74,12 +69,10 @@ class FileExplorer {
         document.body.style.overflow = 'hidden';
         console.log('Modal classes:', this.modal.classList.toString());
         
-        // Focus search input
         if (this.searchInput) {
             this.searchInput.focus();
         }
         
-        // Load files
         await this.loadFiles();
     }
     
@@ -90,7 +83,6 @@ class FileExplorer {
         this.modal.classList.remove('active');
         document.body.style.overflow = '';
         
-        // Clear search
         if (this.searchInput) {
             this.searchInput.value = '';
         }
@@ -238,28 +230,23 @@ class FileExplorer {
         const ext = filename.split('.').pop().toLowerCase();
         
         const icons = {
-            // Images
             'jpg': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>',
             'jpeg': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>',
             'png': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>',
             'gif': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>',
             
-            // Documents
             'pdf': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14,2H6A2,2,0,0,0,4,4V20a2,2,0,0,0,2,2H18a2,2,0,0,0,2-2V8Z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>',
             'doc': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14,2H6A2,2,0,0,0,4,4V20a2,2,0,0,0,2,2H18a2,2,0,0,0,2-2V8Z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>',
             'docx': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14,2H6A2,2,0,0,0,4,4V20a2,2,0,0,0,2,2H18a2,2,0,0,0,2-2V8Z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>',
             'txt': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14,2H6A2,2,0,0,0,4,4V20a2,2,0,0,0,2,2H18a2,2,0,0,0,2-2V8Z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>',
             
-            // Archives
             'zip': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 22h2a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v3"/><polyline points="14,2 14,8 20,8"/><path d="M10 20v-1a2 2 0 1 1 4 0v1a2 2 0 1 1-4 0Z"/><path d="M10 7h4"/><path d="M10 12h4"/></svg>',
             'rar': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 22h2a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v3"/><polyline points="14,2 14,8 20,8"/><path d="M10 20v-1a2 2 0 1 1 4 0v1a2 2 0 1 1-4 0Z"/><path d="M10 7h4"/><path d="M10 12h4"/></svg>',
             
-            // Videos
             'mp4': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>',
             'avi': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>',
             'mov': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>',
             
-            // Audio
             'mp3': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
             'wav': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
         };
@@ -310,7 +297,6 @@ class FileExplorer {
             const dialog = this.createDeleteDialog(filename, resolve);
             document.body.appendChild(dialog);
             
-            // Focus the cancel button by default
             const cancelBtn = dialog.querySelector('.dialog-cancel');
             if (cancelBtn) cancelBtn.focus();
         });
@@ -344,28 +330,24 @@ class FileExplorer {
             </div>
         `;
         
-        // Handle backdrop click
         const backdrop = dialog.querySelector('.dialog-backdrop');
         backdrop.addEventListener('click', () => {
             this.closeDialog(dialog);
             resolve(false);
         });
         
-        // Handle cancel button
         const cancelBtn = dialog.querySelector('.dialog-cancel');
         cancelBtn.addEventListener('click', () => {
             this.closeDialog(dialog);
             resolve(false);
         });
         
-        // Handle delete button
         const deleteBtn = dialog.querySelector('.dialog-delete');
         deleteBtn.addEventListener('click', () => {
             this.closeDialog(dialog);
             resolve(true);
         });
         
-        // Handle escape key
         const handleEscape = (e) => {
             if (e.key === 'Escape') {
                 this.closeDialog(dialog);
@@ -405,12 +387,10 @@ class FileExplorer {
             const data = await response.json();
             
             if (data.success) {
-                // Remove from current files by ID
                 this.currentFiles = this.currentFiles.filter(file => file.id !== fileId);
                 this.filteredFiles = this.filteredFiles.filter(file => file.id !== fileId);
                 this.renderFiles();
                 
-                // Refresh all file displays using shared function
                 if (typeof window.refreshAllFiles === 'function') {
                     window.refreshAllFiles();
                 }
@@ -424,13 +404,11 @@ class FileExplorer {
     }
 }
 
-// Initialize file explorer
 let fileExplorer;
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Initializing FileExplorer...');
     fileExplorer = new FileExplorer();
-    // Export for global access after initialization
     window.fileExplorer = fileExplorer;
     console.log('FileExplorer initialized and set to window.fileExplorer:', window.fileExplorer);
 });

@@ -1,10 +1,6 @@
-// Authentication Module - Simple JavaScript for student project
-
-// DOM Elements
 let container, signUpButton, signInButton, signupForm, loginForm, forgotForm;
 let showForgot, showLogin, signupMsgDiv, loginMsgDiv, forgotMsgDiv;
 
-// Helper Functions
 function showMessage(container, message, type = 'info') {
     if (!container) return;
     
@@ -18,7 +14,6 @@ function showMessage(container, message, type = 'info') {
     messageElement.textContent = message;
     messageElement.className = `message ${type}`;
     
-    // Auto-hide success messages after 3 seconds
     if (type === 'success') {
         setTimeout(() => {
             if (messageElement.textContent === message) {
@@ -50,7 +45,6 @@ function validatePassword(password) {
     return { isValid: true, message: 'Password is strong' };
 }
 
-// Initialize DOM elements
 function initElements() {
     container = document.getElementById('container');
     signUpButton = document.getElementById('signUp');
@@ -65,15 +59,12 @@ function initElements() {
     forgotMsgDiv = document.getElementById('forgot-message');
 }
 
-// Bind all event listeners
 function bindEvents() {
-    // Panel toggle events
     if (signUpButton && signInButton && container) {
         signUpButton.addEventListener('click', showSignUp);
         signInButton.addEventListener('click', showSignIn);
     }
     
-    // Form navigation events
     if (showForgot) {
         showForgot.addEventListener('click', showForgotPassword);
     }
@@ -82,7 +73,6 @@ function bindEvents() {
         showLogin.addEventListener('click', showLoginForm);
     }
     
-    // Form submission events
     if (signupForm) {
         signupForm.addEventListener('submit', handleSignup);
     }
@@ -96,13 +86,11 @@ function bindEvents() {
     }
 }
 
-// Show signup panel
 function showSignUp() {
     container.classList.add('right-panel-active');
     clearSignupFields();
 }
 
-// Show signin panel
 function showSignIn() {
     container.classList.remove('right-panel-active');
     clearLoginFields();
@@ -111,7 +99,6 @@ function showSignIn() {
     clearForgotFields();
 }
 
-// Show forgot password form
 function showForgotPassword(e) {
     e.preventDefault();
     if (loginForm) loginForm.classList.add('hidden');
@@ -120,7 +107,6 @@ function showForgotPassword(e) {
     clearLoginFields();
 }
 
-// Show login form
 function showLoginForm(e) {
     e.preventDefault();
     if (forgotForm) forgotForm.classList.add('hidden');
@@ -129,7 +115,6 @@ function showLoginForm(e) {
     clearLoginFields();
 }
 
-// Clear signup form fields
 function clearSignupFields() {
     if (signupForm) {
         clearForm(signupForm);
@@ -139,7 +124,6 @@ function clearSignupFields() {
     }
 }
 
-// Clear login form fields
 function clearLoginFields() {
     if (loginForm) {
         clearForm(loginForm);
@@ -149,7 +133,6 @@ function clearLoginFields() {
     }
 }
 
-// Clear forgot password form fields
 function clearForgotFields() {
     if (forgotForm) {
         clearForm(forgotForm);
@@ -159,7 +142,6 @@ function clearForgotFields() {
     }
 }
 
-// Validate signup form
 function validateSignupForm(email, password) {
     if (!email || !password) {
         return { isValid: false, message: 'Please fill in all fields' };
@@ -177,7 +159,6 @@ function validateSignupForm(email, password) {
     return { isValid: true };
 }
 
-// Validate login form
 function validateLoginForm(email, password) {
     if (!email || !password) {
         return { isValid: false, message: 'Please fill in all fields' };
@@ -190,14 +171,12 @@ function validateLoginForm(email, password) {
     return { isValid: true };
 }
 
-// Handle signup form submission
 async function handleSignup(e) {
     e.preventDefault();
     
     const email = signupForm.querySelector('input[name="email"]').value.trim();
     const password = signupForm.querySelector('input[name="password"]').value;
     
-    // Validate form
     const validation = validateSignupForm(email, password);
     if (!validation.isValid) {
         showMessage(signupMsgDiv, validation.message, 'error');
@@ -226,14 +205,12 @@ async function handleSignup(e) {
     }
 }
 
-// Handle login form submission
 async function handleLogin(e) {
     e.preventDefault();
     
     const email = loginForm.querySelector('input[name="email"]').value.trim();
     const password = loginForm.querySelector('input[name="password"]').value;
     
-    // Validate form
     const validation = validateLoginForm(email, password);
     if (!validation.isValid) {
         showMessage(loginMsgDiv, validation.message, 'error');
@@ -264,7 +241,6 @@ async function handleLogin(e) {
     }
 }
 
-// Handle forgot password form submission
 async function handleForgotPassword(e) {
     e.preventDefault();
     
@@ -314,7 +290,6 @@ async function handleForgotPassword(e) {
     }
 }
 
-// Initialize authentication when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     initElements();
     bindEvents();

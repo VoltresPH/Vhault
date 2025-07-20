@@ -14,8 +14,6 @@ try {
             'url' => $baseUrl . '/' . $row['filepath']
         ];
     }
-} catch (Exception $e) {
-    // fallback: empty list
-}
+} catch (Exception $e) {}
 
 echo json_encode(['files' => $files]); 
