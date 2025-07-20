@@ -1,149 +1,157 @@
 <?php
-    require_once "inc/init.php";
-    
-    // Check if user is logged in
-    if (!isset($_SESSION['user_id'])) {
-        header('Location: login.php');
-        exit();
-    }
-
-    // Handle file upload
-    $upload_error = '';
-    $upload_success = '';
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
-        $result = uploadFile($_SESSION['user_id'], $_FILES['file']);
-        if ($result['success']) {
-            $upload_success = 'File uploaded successfully!';
-        } else {
-            $upload_error = 'Failed to upload file. Please try again.';
-        }
-    }
-
-    // Get user's files
-    $files = getUserFiles($_SESSION['user_id']);
-    $has_files = !empty($files);
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: auth.php');
+    exit;
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vhault - Haul your files. Vault your world.</title>
-
-    <!-- bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
-    <!-- custom css -->
-    <link rel="stylesheet" href="assets/global.css">
-    <?php if ($has_files): ?>
-    <link rel="stylesheet" href="assets/upload.css">
-    <?php else: ?>
-    <link rel="stylesheet" href="assets/index.css">
-    <?php endif; ?>
+    <title>Vhault</title>
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/file-explorer.css">
 </head>
-
-<body class="bg">
-    <?php if ($has_files): ?>
-        <!-- Upload Interface -->
-        <nav class="navbar">
-            <div class="container-fluid">
-                <div class="brand-section">
-                    <a class="navbar-brand" href="/">VHAULT</a>
-                    <p class="tagline">Haul your files. Vault your world.</p>
-                </div>
-                <div class="user-profile">
-                    <i class="bi bi-person-circle"></i>
-                    <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                    <a href="logout.php" class="logout-text">Logout</a>
-                </div>
+<body>
+<header class="dashboard-header">
+    <div class="header-content">
+        <div class="logo">VHAULT</div>
+        <div class="tagline">Haul your files. Vault your world.</div>
+        <div id="profile-info" class="profile-info">
+            <svg class="profile-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span id="profile-email" class="profile-email"></span>
+        </div>
+    </div>
+</header>
+<div class="main-flex-container">
+    <div class="recent-files-column">
+        <div class="recent-header-row">
+            <h3>Recent Uploads</h3>
+            <button id="file-manager-btn" class="file-manager-btn" aria-label="Open File Manager">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </button>
+        </div>
+        <ul id="recent-files-list" class="recent-files-list">
+            <!-- Recent files will be loaded here -->
+        </ul>
+    </div>
+    <div class="vertical-separator"></div>
+    <div class="upload-container">
+        <div id="drop-area" class="drop-area">
+            <div class="upload-form">
+                <p>Drag & drop files here, or <label for="fileElem" class="file-label">browse files</label>.</p>
+                <input type="file" id="fileElem" class="file-input">
             </div>
-        </nav>
-
-        <?php if ($upload_error): ?>
-            <div class="alert alert-danger"><?php echo htmlspecialchars($upload_error); ?></div>
-        <?php endif; ?>
-        <?php if ($upload_success): ?>
-            <div class="alert alert-success"><?php echo htmlspecialchars($upload_success); ?></div>
-        <?php endif; ?>
-
-        <div class="main-content">
-            <div class="sidebar">
-                <div class="recent-files">
-                    <h2>
-                        <a href="download.php" class="folder-link" title="View all files">
-                            <i class="bi bi-folder2-open"></i>
-                        </a>
-                        Recent Files
-                    </h2>
-                    <div class="file-list">
-                        <?php foreach ($files as $file): ?>
-                        <div class="file-item">
-                            <div class="file-name" title="<?php echo htmlspecialchars($file['filename']); ?>">
-                                <?php echo htmlspecialchars($file['filename']); ?>
-                            </div>
-                            <button class="download-btn" onclick="window.location.href='download.php?file=<?php echo $file['id']; ?>'">
-                                <i class="bi bi-download"></i>
-                            </button>
-                        </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
+            <div id="upload-status" class="upload-status"></div>
+            <button id="upload-more-btn" class="upload-more-btn hidden">Upload More</button>
+        </div>
+    </div>
+</div>
+<script>
+// Simple hover logout functionality
+window.addEventListener('DOMContentLoaded', function() {
+    const profileInfo = document.getElementById('profile-info');
+    const profileEmail = document.getElementById('profile-email');
+    let originalEmail = '';
+    
+    // Load user profile first
+    fetch('api/get_profile.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.email && profileEmail) {
+                originalEmail = data.email;
+                profileEmail.textContent = originalEmail;
+                
+                // Fix width glitch by setting minimum width after email loads
+                setTimeout(() => {
+                    if (profileInfo) {
+                        profileInfo.style.minWidth = profileInfo.offsetWidth + 'px';
+                    }
+                }, 100);
+                
+                // Now set up hover functionality
+                if (profileInfo) {
+                    // Make it look clickable
+                    profileInfo.style.cursor = 'pointer';
+                    
+                    // Hover to show logout
+                    profileInfo.onmouseenter = function() {
+                        profileEmail.textContent = 'Logout?';
+                    };
+                    
+                    // Mouse leave to show email
+                    profileInfo.onmouseleave = function() {
+                        profileEmail.textContent = originalEmail;
+                    };
+                    
+                    // Click to logout
+                    profileInfo.onclick = function() {
+                        if (profileEmail.textContent === 'Logout?') {
+                            // Simple logout redirect
+                            window.location.href = 'api/logout.php';
+                        }
+                    };
+                }
+            } else {
+                // Fallback if not logged in
+                if (profileEmail) {
+                    profileEmail.textContent = 'Not logged in';
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error loading profile:', error);
+            if (profileEmail) {
+                profileEmail.textContent = 'User';
+            }
+        });
+});
+</script>
+<!-- File Explorer Modal -->
+<div id="file-explorer-modal" class="file-explorer-modal" aria-hidden="true">
+    <div class="file-explorer-content">
+        <div class="file-explorer-header">
+            <div class="file-explorer-title">
+                <h2>Your Files</h2>
+                <p>Manage and view your uploaded files</p>
+            </div>
+            <button id="file-explorer-close-btn" class="close-modal" aria-label="Close file explorer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="file-explorer-toolbar">
+            <div class="search-container">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="M21 21l-4.35-4.35"/>
+                </svg>
+                <input type="text" id="file-search" placeholder="Search files..." class="search-input">
             </div>
 
-            <div class="main-area">
-                <form method="post" enctype="multipart/form-data" class="upload-form">
-                    <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-                        <input type="file" name="file" id="fileInput" style="display: none;">
-                        <i class="bi bi-cloud-upload"></i>
-                        <div class="upload-text">Drop your files here</div>
-                        <div class="upload-subtext">or click to browse</div>
-                    </div>
-                </form>
+        </div>
+        
+        <div class="file-explorer-body" id="file-explorer-body">
+            <!-- Files will be loaded here dynamically -->
+            <div class="loading-container">
+                <div class="spinner"></div>
+                <p>Loading files...</p>
             </div>
         </div>
-    <?php else: ?>
-        <!-- Initial Interface -->
-        <div class="content-wrapper">
-            <div>
-                <h1 class="logo">VHAULT</h1>
-                <p class="tagline">Haul your files. Vault your world.</p>
-            </div>
-            <form method="post" enctype="multipart/form-data">
-                <div class="drop-zone" onclick="document.getElementById('initialFileInput').click()">
-                    <input type="file" name="file" id="initialFileInput" style="display: none;">
-                    <i class="bi bi-cloud-upload"></i>
-                    <p>Drag and drop files here or click to upload</p>
-                </div>
-            </form>
-            <div class="user-section">
-                <div class="user-content">
-                    <i class="bi bi-person user-icon"></i>
-                    <span class="username"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                </div>
-                <a href="logout.php" class="logout-text">Log out</a>
-            </div>
-        </div>
-    <?php endif; ?>
 
-    <!-- custom js -->
-    <script src="assets/index.js"></script>
-    <?php if ($has_files): ?>
-    <script src="assets/upload.js"></script>
-    <?php endif; ?>
-
-    <?php if ($upload_success || $upload_error): ?>
-    <script>
-        // Auto-hide alerts after 3 seconds
-        setTimeout(() => {
-            const alerts = document.querySelectorAll('.alert');
-            alerts.forEach(alert => {
-                alert.style.opacity = '0';
-                setTimeout(() => alert.remove(), 300);
-            });
-        }, 3000);
-    </script>
-    <?php endif; ?>
+    </div>
+</div>
+<script src="assets/js/file-explorer.js"></script>
+<script src="assets/js/file-upload.js"></script>
 </body>
 </html>

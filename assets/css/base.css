@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,800');
+
+/* CSS Custom Properties (Variables) */
+:root {
+    /* Color Palette - Professional Blue/Teal Theme */
+    --color-background: #1A1D23;
+    --color-surface: #252A32;
+    --color-primary: #00A8CC;
+    --color-secondary: #0077B6;
+    --color-accent: #48CAE4;
+    --color-text-primary: #E8F4F8;
+    --color-text-secondary: #1A1D23;
+    --color-border: #3A4A5C;
+    --color-error: #E74C3C;
+    --color-success: #48CAE4; /* Changed from green to accent teal to match theme */
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(to right, #FF4B2B, #FF416C);
+    --gradient-separator: linear-gradient(to bottom, var(--color-primary) 0%, var(--color-secondary) 100%);
+    
+    /* Shadows */
+    --shadow-light: 0 2px 8px rgba(0,0,0,0.10);
+    --shadow-medium: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    
+    /* Border Radius */
+    --radius-small: 4px;
+    --radius-medium: 8px;
+    --radius-large: 18px;
+    --radius-pill: 24px;
+    
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    
+    /* Typography */
+    --font-family: 'Montserrat', sans-serif;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.08rem;
+    --font-size-xl: 1.2rem;
+    --font-weight-normal: 400;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 800;
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.6s ease-in-out;
+}
+
+/* Reset and Base Styles */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    overflow-x: hidden;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: var(--font-size-xl); }
+
+p {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+    margin: var(--spacing-md) 0;
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-secondary);
+}
+
+/* Form Elements */
+input {
+    background-color: #eee;
+    border: none;
+    padding: 12px 15px;
+    margin: var(--spacing-sm) 0;
+    width: 100%;
+    border-radius: var(--radius-small);
+    font-family: var(--font-family);
+}
+
+input:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Button Base Styles */
+button {
+    border-radius: var(--radius-large);
+    border: 0;
+    background-color: var(--color-primary);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    padding: 12px var(--spacing-xl);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-family: var(--font-family);
+}
+
+button:hover {
+    background-color: var(--color-secondary);
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+button:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Utility Classes */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.flex { display: flex; }
+.flex-column { flex-direction: column; }
+.flex-row { flex-direction: row; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+
+.hidden { display: none !important; }
+.visible { display: block !important; }
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 4px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* For Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+}
