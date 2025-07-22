@@ -19,9 +19,16 @@ $uploadDir = '../uploads/';
 if (!is_dir($uploadDir)) {
     mkdir($uploadDir, 0777, true);
 }
+
+if (!is_writable($uploadDir)) {
+    chmod($uploadDir, 0777);
+    if (!is_writable($uploadDir)) {
+        echo json_encode(['success' => false, 'message' => 'Upload directory is not writable. Please check permissions.']);
+        exit;
+    }
+}
 $filename = uniqid() . '_' . basename($file['name']);
 $filepath = $uploadDir . $filename;
-// Check for upload errors first
 if ($file['error'] !== UPLOAD_ERR_OK) {
     $error_messages = [
         UPLOAD_ERR_INI_SIZE => 'File exceeds upload_max_filesize directive',
@@ -47,4 +54,4 @@ if (move_uploaded_file($file['tmp_name'], $filepath)) {
     echo json_encode(['success' => true, 'message' => 'File uploaded successfully.']);
 } else {
     echo json_encode(['success' => false, 'message' => 'Failed to move uploaded file.']);
-} 
+}
