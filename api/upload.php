@@ -21,6 +21,22 @@ if (!is_dir($uploadDir)) {
 }
 $filename = uniqid() . '_' . basename($file['name']);
 $filepath = $uploadDir . $filename;
+// Check for upload errors first
+if ($file['error'] !== UPLOAD_ERR_OK) {
+    $error_messages = [
+        UPLOAD_ERR_INI_SIZE => 'File exceeds upload_max_filesize directive',
+        UPLOAD_ERR_FORM_SIZE => 'File exceeds MAX_FILE_SIZE directive',
+        UPLOAD_ERR_PARTIAL => 'File was only partially uploaded',
+        UPLOAD_ERR_NO_FILE => 'No file was uploaded',
+        UPLOAD_ERR_NO_TMP_DIR => 'Missing temporary folder',
+        UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk',
+        UPLOAD_ERR_EXTENSION => 'File upload stopped by extension'
+    ];
+    $error_msg = isset($error_messages[$file['error']]) ? $error_messages[$file['error']] : 'Unknown upload error';
+    echo json_encode(['success' => false, 'message' => $error_msg]);
+    exit;
+}
+
 if (move_uploaded_file($file['tmp_name'], $filepath)) {
     $stmt = $db->prepare('INSERT INTO file_uploads (user_id, filename, filepath) VALUES (:user_id, :filename, :filepath)');
     $stmt->execute([
